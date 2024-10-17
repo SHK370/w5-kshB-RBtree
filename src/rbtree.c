@@ -1,18 +1,5 @@
-// test branch github
-
 #include "rbtree.h"
 #include <stdlib.h>
-
-// Helper function to create a new node
-node_t *create_node(rbtree *t, const key_t key) {
-  node_t *node = (node_t *)malloc(sizeof(node_t));
-  node->key = key;
-  node->color = RBTREE_RED;  // New nodes are initially red
-  node->parent = t->nil;
-  node->left = t->nil;
-  node->right = t->nil;
-  return node;
-}
 
 // Create a new red-black tree
 rbtree *new_rbtree(void) {
@@ -121,7 +108,14 @@ void rbtree_insert_fixup(rbtree *t, node_t *z) {
 
 // Insert a new node into the red-black tree
 node_t *rbtree_insert(rbtree *t, const key_t key) {
-  node_t *z = create_node(t, key);
+  // 직접 노드 생성
+  node_t *z = (node_t *)malloc(sizeof(node_t));
+  z->key = key;
+  z->color = RBTREE_RED;  // New nodes are initially red
+  z->parent = t->nil;
+  z->left = t->nil;
+  z->right = t->nil;
+
   node_t *y = t->nil;
   node_t *x = t->root;
 
@@ -142,10 +136,6 @@ node_t *rbtree_insert(rbtree *t, const key_t key) {
   } else {
     y->right = z;
   }
-
-  z->left = t->nil;
-  z->right = t->nil;
-  z->color = RBTREE_RED;
 
   rbtree_insert_fixup(t, z);
 
